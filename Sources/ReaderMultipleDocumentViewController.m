@@ -42,7 +42,6 @@
     // add them to the main view
     [self.view addSubview:_contentViewLeft];
     [self.view addSubview:_contentViewRight];
-
 }
 
 - (NSInteger)nextPageNumber

@@ -92,7 +92,9 @@
 
 	UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 	//singleTap.numberOfTouchesRequired = 1; singleTap.numberOfTapsRequired = 1; //singleTap.delegate = self;
-	[self.view addGestureRecognizer:singleTap]; 
+	[self.view addGestureRecognizer:singleTap];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetPageViewcontroller) name:@"dismissed" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -118,8 +120,9 @@
 #if (DEMO_VIEW_CONTROLLER_PUSH == TRUE)
 
 	[self.navigationController setNavigationBarHidden:YES animated:animated];
-
+    [self.navigationController setDelegate:self];    
 #endif // DEMO_VIEW_CONTROLLER_PUSH
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -166,6 +169,25 @@
 #endif
 
 	[super didReceiveMemoryWarning];
+}
+
+- (void)resetPageViewcontroller2
+{
+    NSArray *pdfs = [[NSBundle mainBundle] pathsForResourcesOfType:@"pdf" inDirectory:nil];
+    NSString *filePath = [pdfs lastObject]; assert(filePath != nil); // Path to last PDF file
+	ReaderDocument *document = [ReaderDocument withDocumentFilePath:filePath password:nil];
+    
+    ReaderPageViewController *ctrl = [ReaderPageViewController readerPageViewControllerWithDocument:document displayOption:ReaderDisplayOptionDoublePageOnLandscape];
+    
+    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    ctrl.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentModalViewController:ctrl animated:NO];
+}
+
+- (void)resetPageViewcontroller
+{
+    [self performSelector:@selector(resetPageViewcontroller2) withObject:nil afterDelay:0.2];
 }
 
 #pragma mark UIGestureRecognizer methods

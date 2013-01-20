@@ -32,12 +32,26 @@
 
 - (NSInteger)nextPageNumber
 {
-    return (self.pageNumber + 2 <= self.document.pageCount.integerValue) ? self.pageNumber + 2 : 0;
+    NSInteger nextPageNumber;
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
+        nextPageNumber = (self.pageNumber + 2 <= self.document.pageCount.integerValue) ? self.pageNumber + 2 : 0;
+    } else {
+        nextPageNumber = (self.pageNumber + 1 <= self.document.pageCount.integerValue) ? self.pageNumber + 1 : 0;
+    }
+    return nextPageNumber;
 }
 
 - (NSInteger)prevPageNumber
 {
-    return (self.pageNumber <= 1) ? 0 : self.pageNumber - 2;
+    NSInteger prevPageNumber;
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
+        prevPageNumber = (self.pageNumber <= 1) ? 0 : self.pageNumber - 2;
+    } else {
+        prevPageNumber = (self.pageNumber <= 1) ? 0 : self.pageNumber - 1;
+    }
+    return prevPageNumber;
 }
 
 #pragma mark - orientation support

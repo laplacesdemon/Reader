@@ -54,6 +54,7 @@
     [[ReaderPageViewController alloc] initWithReaderDocument:aDocument
                                                displayOption:theDisplayOption];
     [ctrl setDataSource:ctrl];
+    [ctrl setDelegate:ctrl];
     
     ReaderBaseDocumentBViewController *documentController =
     [ReaderDocumentFactory documentViewControllerForDisplayOption:theDisplayOption
@@ -70,7 +71,46 @@
     return ctrl;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self dismissModalViewControllerAnimated:NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissed" object:nil];
+    
+    /*
+    // reset controllers
+    ReaderBaseDocumentBViewController *currentViewController = self.viewControllers[0];
+    
+    NSInteger pageNr;
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        pageNr = currentViewController.pageNumber / 2;
+    } else {
+        pageNr = currentViewController.pageNumber;
+    }
+    
+    ReaderBaseDocumentBViewController *documentController =
+    [ReaderDocumentFactory documentViewControllerForDisplayOption:_displayOption
+                                                       pageNumber:pageNr
+                                                         document:_document];
+    
+    NSArray *ctrls = [NSArray arrayWithObjects:documentController, nil];
+    [self setViewControllers:ctrls direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+        
+    }];
+    
+    */
+    
+    NSLog(@"hell yeah");
+}
+
 #pragma mark - uipageviewcontroller datasource
+
+- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController
+                   spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    NSLog(@"hoih");
+    return UIPageViewControllerSpineLocationMin;
+    
+}
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
       viewControllerBeforeViewController:(ReaderBaseDocumentBViewController *)viewController
@@ -78,6 +118,7 @@
     NSInteger totalPages = _document.pageCount.integerValue;
     // previous page
     NSInteger pageIndex = [viewController prevPageNumber];
+    NSLog(@"before: %d", pageIndex);
     if (pageIndex > 0 && pageIndex <= totalPages) {
         return [ReaderDocumentFactory documentViewControllerForDisplayOption:_displayOption
                                                                   pageNumber:pageIndex
@@ -90,8 +131,9 @@
        viewControllerAfterViewController:(ReaderBaseDocumentBViewController *)viewController
 {
     NSInteger totalPages = _document.pageCount.integerValue;
-    // previous page
+    // next page
     NSInteger pageIndex = [viewController nextPageNumber];
+    NSLog(@"next: %d", pageIndex);
     if (pageIndex > 0 && pageIndex <= totalPages) {
         return [ReaderDocumentFactory documentViewControllerForDisplayOption:_displayOption
                                                                   pageNumber:pageIndex
