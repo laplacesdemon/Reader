@@ -62,6 +62,7 @@
 		45D5AD9F1610E66B00706B9A /* HISTORY.md in Resources */ = {isa = PBXBuildFile; fileRef = 45D5AD9E1610E66B00706B9A /* HISTORY.md */; };
 		45D5ADA31610EADD00706B9A /* ReaderDocumentOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */; };
 		6711784D16AC45ED00A98B3B /* ReaderMultipleDocumentOrientedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6711784C16AC45ED00A98B3B /* ReaderMultipleDocumentOrientedViewController.m */; };
+		6711785116AC4DC100A98B3B /* ReaderDocumentFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6711785016AC4DC100A98B3B /* ReaderDocumentFactory.m */; };
 		67146AC8169F246700981A8F /* ReaderPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AC7169F246700981A8F /* ReaderPageViewController.m */; };
 		67146AD6169F277D00981A8F /* ReaderSingleDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AD5169F277D00981A8F /* ReaderSingleDocumentViewController.m */; };
 		67146AD9169F2E4700981A8F /* ReaderBaseDocumentBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AD8169F2E4700981A8F /* ReaderBaseDocumentBViewController.m */; };
@@ -151,6 +152,8 @@
 		45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderDocumentOutline.m; path = Sources/ReaderDocumentOutline.m; sourceTree = "<group>"; };
 		6711784B16AC45ED00A98B3B /* ReaderMultipleDocumentOrientedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderMultipleDocumentOrientedViewController.h; path = Sources/ReaderMultipleDocumentOrientedViewController.h; sourceTree = "<group>"; };
 		6711784C16AC45ED00A98B3B /* ReaderMultipleDocumentOrientedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderMultipleDocumentOrientedViewController.m; path = Sources/ReaderMultipleDocumentOrientedViewController.m; sourceTree = "<group>"; };
+		6711784F16AC4DC100A98B3B /* ReaderDocumentFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderDocumentFactory.h; path = Sources/ReaderDocumentFactory.h; sourceTree = "<group>"; };
+		6711785016AC4DC100A98B3B /* ReaderDocumentFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderDocumentFactory.m; path = Sources/ReaderDocumentFactory.m; sourceTree = "<group>"; };
 		67146AC6169F246700981A8F /* ReaderPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderPageViewController.h; path = Sources/ReaderPageViewController.h; sourceTree = "<group>"; };
 		67146AC7169F246700981A8F /* ReaderPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderPageViewController.m; path = Sources/ReaderPageViewController.m; sourceTree = "<group>"; };
 		67146AD4169F277D00981A8F /* ReaderSingleDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderSingleDocumentViewController.h; path = Sources/ReaderSingleDocumentViewController.h; sourceTree = "<group>"; };
@@ -309,6 +312,8 @@
 				67146ADB169F33B800981A8F /* ReaderMultipleDocumentViewController.m */,
 				6711784B16AC45ED00A98B3B /* ReaderMultipleDocumentOrientedViewController.h */,
 				6711784C16AC45ED00A98B3B /* ReaderMultipleDocumentOrientedViewController.m */,
+				6711784F16AC4DC100A98B3B /* ReaderDocumentFactory.h */,
+				6711785016AC4DC100A98B3B /* ReaderDocumentFactory.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -455,6 +460,7 @@
 				67146AD9169F2E4700981A8F /* ReaderBaseDocumentBViewController.m in Sources */,
 				67146ADC169F33B900981A8F /* ReaderMultipleDocumentViewController.m in Sources */,
 				6711784D16AC45ED00A98B3B /* ReaderMultipleDocumentOrientedViewController.m in Sources */,
+				6711785116AC4DC100A98B3B /* ReaderDocumentFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

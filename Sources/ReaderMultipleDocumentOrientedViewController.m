@@ -19,7 +19,13 @@
 {
     [super viewDidLoad];
     
-	// adjust the views for the current orientation
+	UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    [self adjustViewsForOrientation:currentOrientation];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    // adjust the views for the current orientation
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     [self adjustViewsForOrientation:currentOrientation];
 }
