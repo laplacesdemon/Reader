@@ -8,6 +8,7 @@
 
 #import "ReaderMultipleDocumentViewController.h"
 #import "ReaderContentView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ReaderMultipleDocumentViewController ()
 
@@ -23,23 +24,24 @@
     NSURL *fileURL = self.document.fileURL;
     NSString *phrase = self.document.password;
     
+    // set the pdf document on the left
     CGRect selfFrame = self.view.frame;
     ReaderContentView *contentViewLeft = [[ReaderContentView alloc] initWithFrame:CGRectMake(0, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
                                                                       fileURL:fileURL
                                                                          page:self.pageNumber
                                                                      password:phrase];
+    
+    // set the pdf document on the right
     [contentViewLeft showPageThumb:fileURL page:self.pageNumber password:phrase guid:self.document.guid];
     ReaderContentView *contentViewRight = [[ReaderContentView alloc] initWithFrame:CGRectMake(selfFrame.size.width / 2, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
                                                                       fileURL:fileURL
                                                                          page:self.pageNumber + 1
                                                                      password:phrase];
-
-    NSLog(@"self frame x:%f y:%f w:%f h:%f", self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
-    NSLog(@"contentViewLeft frame x:%f y:%f w:%f h:%f", contentViewLeft.frame.origin.x, contentViewLeft.frame.origin.y, contentViewLeft.frame.size.width, contentViewLeft.frame.size.height);
-    NSLog(@"contentViewRight frame x:%f y:%f w:%f h:%f", contentViewRight.frame.origin.x, contentViewRight.frame.origin.y, contentViewRight.frame.size.width, contentViewRight.frame.size.height);
     
+    // add them to the main view
     [self.view addSubview:contentViewLeft];
     [self.view addSubview:contentViewRight];
+
 }
 
 - (NSInteger)nextPageNumber

@@ -29,6 +29,7 @@
 
 #import <Foundation/Foundation.h>
 
+#define READER_USE_VERSION_2 TRUE
 #define READER_BOOKMARKS TRUE
 #define READER_ENABLE_MAIL TRUE
 #define READER_ENABLE_PRINT TRUE
