@@ -7,14 +7,14 @@
 //
 
 #import "ReaderMultipleDocumentViewController.h"
-#import "ReaderContentView.h"
-#import <QuartzCore/QuartzCore.h>
 
 @interface ReaderMultipleDocumentViewController ()
 
 @end
 
 @implementation ReaderMultipleDocumentViewController
+@synthesize contentViewLeft = _contentViewLeft;
+@synthesize contentViewRight = _contentViewRight;
 
 - (void)viewDidLoad
 {
@@ -26,21 +26,22 @@
     
     // set the pdf document on the left
     CGRect selfFrame = self.view.frame;
-    ReaderContentView *contentViewLeft = [[ReaderContentView alloc] initWithFrame:CGRectMake(0, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
+    _contentViewLeft = [[ReaderContentView alloc] initWithFrame:CGRectMake(selfFrame.origin.x, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
                                                                       fileURL:fileURL
                                                                          page:self.pageNumber
                                                                      password:phrase];
     
     // set the pdf document on the right
-    [contentViewLeft showPageThumb:fileURL page:self.pageNumber password:phrase guid:self.document.guid];
-    ReaderContentView *contentViewRight = [[ReaderContentView alloc] initWithFrame:CGRectMake(selfFrame.size.width / 2, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
+    [_contentViewLeft showPageThumb:fileURL page:self.pageNumber password:phrase guid:self.document.guid];
+    
+    _contentViewRight = [[ReaderContentView alloc] initWithFrame:CGRectMake(selfFrame.size.width / 2, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
                                                                       fileURL:fileURL
                                                                          page:self.pageNumber + 1
                                                                      password:phrase];
     
     // add them to the main view
-    [self.view addSubview:contentViewLeft];
-    [self.view addSubview:contentViewRight];
+    [self.view addSubview:_contentViewLeft];
+    [self.view addSubview:_contentViewRight];
 
 }
 

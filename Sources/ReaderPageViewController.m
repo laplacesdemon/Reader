@@ -11,6 +11,7 @@
 #import "ReaderBaseDocumentBViewController.h"
 #import "ReaderSingleDocumentViewController.h"
 #import "ReaderMultipleDocumentViewController.h"
+#import "ReaderMultipleDocumentOrientedViewController.h"
 #import "ReaderConstants.h"
 
 @interface ReaderPageViewController ()
@@ -70,15 +71,18 @@
     // previous page
     NSInteger pageIndex = [viewController prevPageNumber];
     if (pageIndex > 0 && pageIndex <= totalPages) {
-        if (_displayOption == ReaderDisplayOptionDoublePage || _displayOption == ReaderDisplayOptionDoublePageOnLandscape) {
-            ReaderMultipleDocumentViewController *ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:_document];
+        ReaderBaseDocumentBViewController *ctrl;
+        if (_displayOption == ReaderDisplayOptionDoublePage) {
+            ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
-            return ctrl;
+        } else if (_displayOption == ReaderDisplayOptionDoublePageOnLandscape) {
+            ctrl = [[ReaderMultipleDocumentOrientedViewController alloc] initWithReaderDocument:_document];
+            [ctrl setPageNumber:pageIndex];
         } else {
-            ReaderSingleDocumentViewController *ctrl = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:_document];
+            ctrl = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
-            return ctrl;
         }
+        return ctrl;
     }
     return nil;
 }
@@ -89,15 +93,18 @@
     // previous page
     NSInteger pageIndex = [viewController nextPageNumber];
     if (pageIndex > 0 && pageIndex <= totalPages) {
-        if (_displayOption == ReaderDisplayOptionDoublePage || _displayOption == ReaderDisplayOptionDoublePageOnLandscape) {
-            ReaderMultipleDocumentViewController *ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:_document];
+        ReaderBaseDocumentBViewController *ctrl;
+        if (_displayOption == ReaderDisplayOptionDoublePage) {
+            ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
-            return ctrl;
+        } else if (_displayOption == ReaderDisplayOptionDoublePageOnLandscape) {
+            ctrl = [[ReaderMultipleDocumentOrientedViewController alloc] initWithReaderDocument:_document];
+            [ctrl setPageNumber:pageIndex];
         } else {
             ReaderSingleDocumentViewController *ctrl = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
-            return ctrl;
         }
+        return ctrl;
     }
     return nil;
 }

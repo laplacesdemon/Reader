@@ -7,6 +7,11 @@
 //
 
 #import "ReaderBaseDocumentBViewController.h"
+#import "ReaderContentView.h"
 
 @interface ReaderMultipleDocumentViewController : ReaderBaseDocumentBViewController
+
+@property (nonatomic, strong) ReaderContentView *contentViewLeft;
+@property (nonatomic, strong) ReaderContentView *contentViewRight;
+
 @end
