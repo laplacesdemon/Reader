@@ -38,7 +38,5 @@
 #define READER_DISABLE_IDLE FALSE
 #define READER_SHOW_SHADOWS TRUE
 #define READER_STANDALONE FALSE
-#define READER_DOUBLE_PAGE_IPAD TRUE  // show 2 page side by side in lanscape view (only for ipad)
-#define READER_DOUBLE_PAGE_ONLY_LANDSCAPE_IPAD TRUE  // if double page display is used, allow it only in landscape mode
 
 extern NSString *const kReaderCopyrightNotice;

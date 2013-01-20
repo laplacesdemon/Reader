@@ -19,16 +19,16 @@
 
 @implementation ReaderPageViewController
 {
-    ReaderDocument *document;
+    ReaderDocument *_document;
 }
-@synthesize useMultipleDocuments;
+@synthesize displayOption = _displayOption;
 
-- (id)initWithReaderDocument:(ReaderDocument *)aDocument
+- (id)initWithReaderDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)theDisplayOption
 {
     self = [super initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     if (self) {
-        document = aDocument;
-        useMultipleDocuments = NO; // default value
+        _document = aDocument;
+        _displayOption = theDisplayOption;
     }
     return self;
 }
@@ -46,18 +46,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-+ (ReaderPageViewController *)readerPageViewControllerWithDocument:(ReaderDocument *)aDocument
++ (ReaderPageViewController *)readerPageViewControllerWithDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)theDisplayOption
 {
-    ReaderPageViewController *ctrl = [[ReaderPageViewController alloc] initWithReaderDocument:aDocument];
+    ReaderPageViewController *ctrl = [[ReaderPageViewController alloc] initWithReaderDocument:aDocument displayOption:theDisplayOption];
     [ctrl setDataSource:ctrl];
-    ReaderBaseDocumentBViewController *documentController;
-#if (READER_DOUBLE_PAGE_IPAD == TRUE)
-    [ctrl setUseMultipleDocuments:YES];
-    documentController = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:aDocument];
-#else
-    [ctrl setUseMultipleDocuments:NO];
-    documentController = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:aDocument];
-#endif
+    ReaderBaseDocumentBViewController *documentController = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:aDocument];
     
     [documentController setPageNumber:1];
     NSArray *ctrls = [NSArray arrayWithObjects:documentController, nil];
@@ -73,16 +66,16 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(ReaderBaseDocumentBViewController *)viewController
 {
-    NSInteger totalPages = document.pageCount.integerValue;
+    NSInteger totalPages = _document.pageCount.integerValue;
     // previous page
     NSInteger pageIndex = [viewController prevPageNumber];
     if (pageIndex > 0 && pageIndex <= totalPages) {
-        if (useMultipleDocuments) {
-            ReaderMultipleDocumentViewController *ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:document];
+        if (_displayOption == ReaderDisplayOptionDoublePage || _displayOption == ReaderDisplayOptionDoublePageOnLandscape) {
+            ReaderMultipleDocumentViewController *ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
             return ctrl;
         } else {
-            ReaderSingleDocumentViewController *ctrl = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:document];
+            ReaderSingleDocumentViewController *ctrl = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
             return ctrl;
         }
@@ -92,17 +85,16 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(ReaderBaseDocumentBViewController *)viewController
 {
-    NSInteger totalPages = document.pageCount.integerValue;
+    NSInteger totalPages = _document.pageCount.integerValue;
     // previous page
     NSInteger pageIndex = [viewController nextPageNumber];
     if (pageIndex > 0 && pageIndex <= totalPages) {
-        if (useMultipleDocuments) {
-            
-            ReaderMultipleDocumentViewController *ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:document];
+        if (_displayOption == ReaderDisplayOptionDoublePage || _displayOption == ReaderDisplayOptionDoublePageOnLandscape) {
+            ReaderMultipleDocumentViewController *ctrl = [[ReaderMultipleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
             return ctrl;
         } else {
-            ReaderSingleDocumentViewController *ctrl = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:document];
+            ReaderSingleDocumentViewController *ctrl = [[ReaderSingleDocumentViewController alloc] initWithReaderDocument:_document];
             [ctrl setPageNumber:pageIndex];
             return ctrl;
         }

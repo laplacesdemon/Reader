@@ -181,7 +181,7 @@
 
 	if (document != nil) // Must have a valid ReaderDocument object in order to proceed with things
 	{
-        ReaderPageViewController *ctrl = [ReaderPageViewController readerPageViewControllerWithDocument:document];
+        ReaderPageViewController *ctrl = [ReaderPageViewController readerPageViewControllerWithDocument:document displayOption:ReaderDisplayOptionDoublePageOnLandscape];
         [self.navigationController pushViewController:ctrl animated:YES];
         
         /*
