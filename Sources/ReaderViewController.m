@@ -63,7 +63,7 @@
 
 #pragma mark Constants
 
-#define PAGING_VIEWS 3
+#define PAGING_VIEWS 4
 
 #define TOOLBAR_HEIGHT 44.0f
 #define PAGEBAR_HEIGHT 48.0f
@@ -86,7 +86,15 @@
 
 	CGFloat contentWidth = (theScrollView.bounds.size.width * count);
 
-	theScrollView.contentSize = CGSizeMake(contentWidth, contentHeight);
+#if (READER_DOUBLE_PAGE_IPAD == TRUE)
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+	theScrollView.contentSize = CGSizeMake(contentWidth / 2, contentHeight);
+    } else {
+    theScrollView.contentSize = CGSizeMake(contentWidth, contentHeight);    
+    }
+#else
+    theScrollView.contentSize = CGSizeMake(contentWidth, contentHeight);
+#endif
 }
 
 - (void)updateScrollViewContentViews
@@ -164,9 +172,19 @@
 		NSMutableIndexSet *newPageSet = [NSMutableIndexSet new];
 
 		NSMutableDictionary *unusedViews = [contentViews mutableCopy];
-
-		CGRect viewRect = CGRectZero; viewRect.size = theScrollView.bounds.size;
-
+        
+        CGRect viewRect = CGRectZero;
+#if (READER_DOUBLE_PAGE_IPAD == TRUE)
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            // fit 2 pages in the viewRect
+            viewRect.size = CGSizeMake(theScrollView.bounds.size.width / 2, theScrollView.bounds.size.height);
+        } else {
+            viewRect.size = theScrollView.bounds.size;
+        }
+#else
+        viewRect.size = theScrollView.bounds.size;
+#endif
+        
 		for (NSInteger number = minValue; number <= maxValue; number++)
 		{
 			NSNumber *key = [NSNumber numberWithInteger:number]; // # key

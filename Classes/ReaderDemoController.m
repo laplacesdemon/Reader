@@ -25,6 +25,7 @@
 
 #import "ReaderDemoController.h"
 #import "ReaderViewController.h"
+#import "ReaderPageViewController.h"
 
 @interface ReaderDemoController () <ReaderViewControllerDelegate>
 
@@ -180,6 +181,10 @@
 
 	if (document != nil) // Must have a valid ReaderDocument object in order to proceed with things
 	{
+        ReaderPageViewController *ctrl = [ReaderPageViewController readerPageViewControllerWithDocument:document];
+        [self.navigationController pushViewController:ctrl animated:YES];
+        
+        /*
 		ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
 
 		readerViewController.delegate = self; // Set the ReaderViewController delegate to self
@@ -196,6 +201,7 @@
 		[self presentModalViewController:readerViewController animated:YES];
 
 #endif // DEMO_VIEW_CONTROLLER_PUSH
+         */
 	}
 }
 

@@ -61,6 +61,10 @@
 		45BD5AFE13AE721A00D6FE97 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45BD5AFD13AE721A00D6FE97 /* MessageUI.framework */; };
 		45D5AD9F1610E66B00706B9A /* HISTORY.md in Resources */ = {isa = PBXBuildFile; fileRef = 45D5AD9E1610E66B00706B9A /* HISTORY.md */; };
 		45D5ADA31610EADD00706B9A /* ReaderDocumentOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */; };
+		67146AC8169F246700981A8F /* ReaderPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AC7169F246700981A8F /* ReaderPageViewController.m */; };
+		67146AD6169F277D00981A8F /* ReaderSingleDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AD5169F277D00981A8F /* ReaderSingleDocumentViewController.m */; };
+		67146AD9169F2E4700981A8F /* ReaderBaseDocumentBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AD8169F2E4700981A8F /* ReaderBaseDocumentBViewController.m */; };
+		67146ADC169F33B900981A8F /* ReaderMultipleDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146ADB169F33B800981A8F /* ReaderMultipleDocumentViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -144,6 +148,14 @@
 		45D5AD9E1610E66B00706B9A /* HISTORY.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HISTORY.md; sourceTree = "<group>"; };
 		45D5ADA11610EADC00706B9A /* ReaderDocumentOutline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderDocumentOutline.h; path = Sources/ReaderDocumentOutline.h; sourceTree = "<group>"; };
 		45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderDocumentOutline.m; path = Sources/ReaderDocumentOutline.m; sourceTree = "<group>"; };
+		67146AC6169F246700981A8F /* ReaderPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderPageViewController.h; path = Sources/ReaderPageViewController.h; sourceTree = "<group>"; };
+		67146AC7169F246700981A8F /* ReaderPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderPageViewController.m; path = Sources/ReaderPageViewController.m; sourceTree = "<group>"; };
+		67146AD4169F277D00981A8F /* ReaderSingleDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderSingleDocumentViewController.h; path = Sources/ReaderSingleDocumentViewController.h; sourceTree = "<group>"; };
+		67146AD5169F277D00981A8F /* ReaderSingleDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderSingleDocumentViewController.m; path = Sources/ReaderSingleDocumentViewController.m; sourceTree = "<group>"; };
+		67146AD7169F2E4700981A8F /* ReaderBaseDocumentBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderBaseDocumentBViewController.h; path = Sources/ReaderBaseDocumentBViewController.h; sourceTree = "<group>"; };
+		67146AD8169F2E4700981A8F /* ReaderBaseDocumentBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderBaseDocumentBViewController.m; path = Sources/ReaderBaseDocumentBViewController.m; sourceTree = "<group>"; };
+		67146ADA169F33B800981A8F /* ReaderMultipleDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderMultipleDocumentViewController.h; path = Sources/ReaderMultipleDocumentViewController.h; sourceTree = "<group>"; };
+		67146ADB169F33B800981A8F /* ReaderMultipleDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderMultipleDocumentViewController.m; path = Sources/ReaderMultipleDocumentViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Reader-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Reader-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -284,6 +296,14 @@
 				45AB7312141FC0B1003524C3 /* ThumbsViewController.m */,
 				45AB730F141FC0B1003524C3 /* ThumbsMainToolbar.h */,
 				45AB7310141FC0B1003524C3 /* ThumbsMainToolbar.m */,
+				67146AC6169F246700981A8F /* ReaderPageViewController.h */,
+				67146AC7169F246700981A8F /* ReaderPageViewController.m */,
+				67146AD4169F277D00981A8F /* ReaderSingleDocumentViewController.h */,
+				67146AD5169F277D00981A8F /* ReaderSingleDocumentViewController.m */,
+				67146AD7169F2E4700981A8F /* ReaderBaseDocumentBViewController.h */,
+				67146AD8169F2E4700981A8F /* ReaderBaseDocumentBViewController.m */,
+				67146ADA169F33B800981A8F /* ReaderMultipleDocumentViewController.h */,
+				67146ADB169F33B800981A8F /* ReaderMultipleDocumentViewController.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -425,6 +445,10 @@
 				4555C74C14211A00005F448D /* ReaderBookDelegate.m in Sources */,
 				455C7891142687CA0053D73B /* UIXToolbarView.m in Sources */,
 				45D5ADA31610EADD00706B9A /* ReaderDocumentOutline.m in Sources */,
+				67146AC8169F246700981A8F /* ReaderPageViewController.m in Sources */,
+				67146AD6169F277D00981A8F /* ReaderSingleDocumentViewController.m in Sources */,
+				67146AD9169F2E4700981A8F /* ReaderBaseDocumentBViewController.m in Sources */,
+				67146ADC169F33B900981A8F /* ReaderMultipleDocumentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
