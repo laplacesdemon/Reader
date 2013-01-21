@@ -27,6 +27,7 @@
 #import "ReaderViewController.h"
 #import "ReaderPageViewController.h"
 #import "ReaderConstants.h"
+#import "Reader.h"
 
 @interface ReaderDemoController () <ReaderViewControllerDelegate>
 
@@ -93,8 +94,6 @@
 	UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 	//singleTap.numberOfTouchesRequired = 1; singleTap.numberOfTapsRequired = 1; //singleTap.delegate = self;
 	[self.view addGestureRecognizer:singleTap];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetPageViewcontroller) name:@"dismissed" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -171,20 +170,6 @@
 	[super didReceiveMemoryWarning];
 }
 
-- (void)resetPageViewcontroller2
-{
-    NSArray *pdfs = [[NSBundle mainBundle] pathsForResourcesOfType:@"pdf" inDirectory:nil];
-    NSString *filePath = [pdfs lastObject]; assert(filePath != nil); // Path to last PDF file
-	ReaderDocument *document = [ReaderDocument withDocumentFilePath:filePath password:nil];
-    
-    ReaderPageViewController *ctrl = [ReaderPageViewController readerPageViewControllerWithDocument:document displayOption:ReaderDisplayOptionDoublePageOnLandscape];
-    
-    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    ctrl.modalPresentationStyle = UIModalPresentationFullScreen;
-    
-    [self presentModalViewController:ctrl animated:NO];
-}
-
 - (void)resetPageViewcontroller
 {
     [self performSelector:@selector(resetPageViewcontroller2) withObject:nil afterDelay:0.2];
@@ -204,28 +189,12 @@
 
 	if (document != nil) // Must have a valid ReaderDocument object in order to proceed with things
 	{
-#if (READER_USE_VERSION_2 == TRUE)
-        ReaderPageViewController *ctrl = [ReaderPageViewController readerPageViewControllerWithDocument:document displayOption:ReaderDisplayOptionDoublePageOnLandscape];
-        [self.navigationController pushViewController:ctrl animated:YES];
-#else
+        Reader *ctrl = [[Reader alloc] initWithDocument:document];
+        ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		ctrl.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.navigationController.navigationBar setHidden:YES];
+        [self.navigationController pushViewController:ctrl animated:NO];
 
-		ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
-
-		readerViewController.delegate = self; // Set the ReaderViewController delegate to self
-
-#if (DEMO_VIEW_CONTROLLER_PUSH == TRUE)
-
-		[self.navigationController pushViewController:readerViewController animated:YES];
-
-#else // present in a modal view controller
-
-		readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-
-		[self presentModalViewController:readerViewController animated:YES];
-
-#endif // DEMO_VIEW_CONTROLLER_PUSH
-#endif
 	}
 }
 

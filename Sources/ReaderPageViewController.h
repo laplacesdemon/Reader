@@ -25,8 +25,8 @@ typedef enum {
 
 @property (nonatomic) ReaderDisplayOption displayOption;
 
-- (id)initWithReaderDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)displayOption;
+- (id)initWithReaderDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)displayOption startPage:(NSInteger)startPage;
 
-+ (ReaderPageViewController *)readerPageViewControllerWithDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)displayOption;
++ (ReaderPageViewController *)readerPageViewControllerWithDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)displayOption startPage:(NSInteger)startPage;
 
 @end

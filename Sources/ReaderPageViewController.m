@@ -21,15 +21,17 @@
 @implementation ReaderPageViewController
 {
     ReaderDocument *_document;
+    NSInteger startPage;
 }
 @synthesize displayOption = _displayOption;
 
-- (id)initWithReaderDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)theDisplayOption
+- (id)initWithReaderDocument:(ReaderDocument *)aDocument displayOption:(ReaderDisplayOption)theDisplayOption startPage:(NSInteger)theStartPage
 {
     self = [super initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     if (self) {
         _document = aDocument;
         _displayOption = theDisplayOption;
+        startPage = theStartPage;
     }
     return self;
 }
@@ -49,16 +51,18 @@
 
 + (ReaderPageViewController *)readerPageViewControllerWithDocument:(ReaderDocument *)aDocument
                                                      displayOption:(ReaderDisplayOption)theDisplayOption
+                                                         startPage:(NSInteger)startPage
 {
     ReaderPageViewController *ctrl =
     [[ReaderPageViewController alloc] initWithReaderDocument:aDocument
-                                               displayOption:theDisplayOption];
+                                               displayOption:theDisplayOption
+                                                   startPage:startPage];
     [ctrl setDataSource:ctrl];
     [ctrl setDelegate:ctrl];
     
     ReaderBaseDocumentBViewController *documentController =
     [ReaderDocumentFactory documentViewControllerForDisplayOption:theDisplayOption
-                                                       pageNumber:1
+                                                       pageNumber:startPage
                                                          document:aDocument];
     
     [documentController setPageNumber:1];
@@ -73,8 +77,7 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self dismissModalViewControllerAnimated:NO];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"dismissed" object:nil];
+    
     
     /*
     // reset controllers
@@ -103,14 +106,6 @@
 }
 
 #pragma mark - uipageviewcontroller datasource
-
-- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController
-                   spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
-{
-    NSLog(@"hoih");
-    return UIPageViewControllerSpineLocationMin;
-    
-}
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
       viewControllerBeforeViewController:(ReaderBaseDocumentBViewController *)viewController
