@@ -189,12 +189,22 @@
 
 	if (document != nil) // Must have a valid ReaderDocument object in order to proceed with things
 	{
+        /*
         Reader *ctrl = [[Reader alloc] initWithDocument:document];
         ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		ctrl.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.navigationController.navigationBar setHidden:YES];
         [self.navigationController pushViewController:ctrl animated:NO];
-
+         */
+        
+        ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
+        
+		readerViewController.delegate = self; // Set the ReaderViewController delegate to self
+        
+		readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        
+		[self presentModalViewController:readerViewController animated:YES];
 	}
 }
 
