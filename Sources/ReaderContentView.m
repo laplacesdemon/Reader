@@ -32,7 +32,8 @@
 
 @implementation ReaderContentView
 {
-	ReaderContentPage *theContentView;
+    UIView *theContentView;
+	//ReaderContentPage *theContentView;
 
 	ReaderContentThumb *theThumbView;
 
@@ -101,8 +102,18 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 		self.autoresizesSubviews = NO;
 		self.bouncesZoom = YES;
 		self.delegate = self;
+        
+        self.backgroundColor = [UIColor blackColor];
 
-		theContentView = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
+		ReaderContentPage *contentPage1 = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
+        ReaderContentPage *contentPage2 = [[ReaderContentPage alloc] initWithURL:fileURL page:page + 1 password:phrase];
+        [contentPage2 setFrame:CGRectMake(contentPage2.frame.origin.x + contentPage1.frame.size.width, contentPage2.frame.origin.y, contentPage2.frame.size.width, contentPage2.frame.size.height)];
+        
+        float theHeight = MAX(contentPage1.frame.size.height, contentPage2.frame.size.height);
+        NSLog(@"self height: %f, %f, %f", self.frame.size.height, self.bounds.size.height,theHeight);
+        theContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, contentPage1.frame.size.width + contentPage2.frame.size.width, theHeight)];
+        [theContentView addSubview:contentPage1];
+        [theContentView addSubview:contentPage2];
 
 		if (theContentView != nil) // Must have a valid and initialized content view
 		{
@@ -130,7 +141,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 			theThumbView = [[ReaderContentThumb alloc] initWithFrame:theContentView.bounds]; // Page thumb view
 
-			[theContainerView addSubview:theThumbView]; // Add the thumb view to the container view
+			//[theContainerView addSubview:theThumbView]; // Add the thumb view to the container view
 
 #endif // end of READER_ENABLE_PREVIEW Option
 
@@ -229,7 +240,8 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (id)processSingleTap:(UITapGestureRecognizer *)recognizer
 {
-	return [theContentView processSingleTap:recognizer];
+    return nil;
+	//return [theContentView processSingleTap:recognizer];
 }
 
 - (void)zoomIncrement

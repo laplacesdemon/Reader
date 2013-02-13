@@ -88,15 +88,7 @@
 
 	CGFloat contentWidth = (theScrollView.bounds.size.width * count);
 
-#if (READER_DOUBLE_PAGE_IPAD == TRUE)
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-	theScrollView.contentSize = CGSizeMake(contentWidth / 2, contentHeight);
-    } else {
-    theScrollView.contentSize = CGSizeMake(contentWidth, contentHeight);    
-    }
-#else
     theScrollView.contentSize = CGSizeMake(contentWidth, contentHeight);
-#endif
 }
 
 - (void)updateScrollViewContentViews
@@ -113,18 +105,8 @@
 	];
 
 	__block CGRect viewRect = CGRectZero;
-#if (READER_DOUBLE_PAGE_IPAD == TRUE)
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        // fit 2 pages in the viewRect
-        viewRect.size = CGSizeMake(theScrollView.bounds.size.width / 2, theScrollView.bounds.size.height);
-    } else {
-        viewRect.size = theScrollView.bounds.size;
-    }
-#else
     viewRect.size = theScrollView.bounds.size;
-#endif
     
-
 	__block CGPoint contentOffset = CGPointZero; NSInteger page = [document.pageNumber integerValue];
 
 	[pageSet enumerateIndexesUsingBlock: // Enumerate page number set
@@ -200,7 +182,8 @@
 #if (READER_DOUBLE_PAGE_IPAD == TRUE)
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
             // fit 2 pages in the viewRect
-            viewRect.size = CGSizeMake(theScrollView.bounds.size.width / 2, theScrollView.bounds.size.height);
+            //viewRect.size = CGSizeMake(theScrollView.bounds.size.width / 2, theScrollView.bounds.size.height);
+            viewRect.size = theScrollView.bounds.size;
         } else {
             viewRect.size = theScrollView.bounds.size;
         }
@@ -208,7 +191,7 @@
         viewRect.size = theScrollView.bounds.size;
 #endif
         
-		for (NSInteger number = minValue; number <= maxValue; number++)
+		for (NSInteger number = minValue; number <= maxValue; number = number + 2)
 		{
 			NSNumber *key = [NSNumber numberWithInteger:number]; // # key
 
@@ -562,7 +545,7 @@
     }
 #if (READER_DOUBLE_PAGE_IPAD == TRUE)
 	if (page != 0) {
-        [self showDocumentPage:page - 2]; // Show the page
+        [self showDocumentPage:page - 4]; // Show the page
     }
 #else
     if (page != 0) [self showDocumentPage:page]; // Show the page
