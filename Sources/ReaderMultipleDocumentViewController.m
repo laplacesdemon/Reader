@@ -27,9 +27,10 @@
     // set the pdf document on the left
     CGRect selfFrame = self.view.frame;
     _contentViewLeft = [[ReaderContentView alloc] initWithFrame:CGRectMake(selfFrame.origin.x, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
-                                                                      fileURL:fileURL
-                                                                         page:self.pageNumber
-                                                                     password:phrase];
+                                                        fileURL:fileURL
+                                                           page:self.pageNumber
+                                                       password:phrase
+                                                   isDoublePage:YES];
     
     // set the pdf document on the right
     [_contentViewLeft showPageThumb:fileURL page:self.pageNumber password:phrase guid:self.document.guid];
@@ -37,7 +38,7 @@
     _contentViewRight = [[ReaderContentView alloc] initWithFrame:CGRectMake(selfFrame.size.width / 2, selfFrame.origin.y, selfFrame.size.width / 2, selfFrame.size.height)
                                                                       fileURL:fileURL
                                                                          page:self.pageNumber + 1
-                                                                     password:phrase];
+                                                        password:phrase isDoublePage:YES];
     
     // add them to the main view
     [self.view addSubview:_contentViewLeft];

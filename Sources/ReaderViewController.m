@@ -100,7 +100,8 @@
 	[contentViews enumerateKeysAndObjectsUsingBlock: // Enumerate content views
 		^(id key, id object, BOOL *stop)
 		{
-			ReaderContentView *contentView = object; [pageSet addIndex:contentView.tag];
+			ReaderContentView *contentView = object;
+            [pageSet addIndex:contentView.tag];
 		}
 	];
 
@@ -140,8 +141,8 @@
 
 - (void)showDocumentPage:(NSInteger)page
 {
-	if (page != currentPage) // Only if different
-	{
+	//if (page != currentPage) // Only if different
+	//{
 		NSInteger minValue; NSInteger maxValue;
 		NSInteger maxPage = [document.pageCount integerValue];
 		NSInteger minPage = 1;
@@ -190,32 +191,67 @@
 #else
         viewRect.size = theScrollView.bounds.size;
 #endif
-        
-		for (NSInteger number = minValue; number <= maxValue; number = number + 2)
-		{
-			NSNumber *key = [NSNumber numberWithInteger:number]; // # key
 
-			ReaderContentView *contentView = [contentViews objectForKey:key];
-
-			if (contentView == nil) // Create a brand new document content view
-			{
-				NSURL *fileURL = document.fileURL; NSString *phrase = document.password; // Document properties
-
-				contentView = [[ReaderContentView alloc] initWithFrame:viewRect fileURL:fileURL page:number password:phrase];
-
-				[theScrollView addSubview:contentView]; [contentViews setObject:contentView forKey:key];
-
-				contentView.message = self; [newPageSet addIndex:number];
-			}
-			else // Reposition the existing content view
-			{
-				contentView.frame = viewRect; [contentView zoomReset];
-
-				[unusedViews removeObjectForKey:key];
-			}
-
-			viewRect.origin.x += viewRect.size.width;
-		}
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            for (NSInteger number = minValue; number <= maxValue; number = number + 2)
+            {
+                NSNumber *key = [NSNumber numberWithInteger:number]; // # key
+                
+                ReaderContentView *contentView = [contentViews objectForKey:key];
+                
+                if (contentView == nil) // Create a brand new document content view
+                {
+                    NSURL *fileURL = document.fileURL;
+                    NSString *phrase = document.password; // Document properties
+                    
+                    BOOL isDoublePage = (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) ? YES : NO;
+                    contentView = [[ReaderContentView alloc] initWithFrame:viewRect fileURL:fileURL page:number password:phrase isDoublePage:isDoublePage];
+                    
+                    [theScrollView addSubview:contentView];
+                    [contentViews setObject:contentView forKey:key];
+                    
+                    contentView.message = self; [newPageSet addIndex:number];
+                }
+                else // Reposition the existing content view
+                {
+                    contentView.frame = viewRect; [contentView zoomReset];
+                    
+                    [unusedViews removeObjectForKey:key];
+                }
+                
+                viewRect.origin.x += viewRect.size.width;
+            }
+        } else {
+            for (NSInteger number = minValue; number <= maxValue; number = number + 1)
+            {
+                NSNumber *key = [NSNumber numberWithInteger:number]; // # key
+                
+                ReaderContentView *contentView = [contentViews objectForKey:key];
+                
+                if (contentView == nil) // Create a brand new document content view
+                {
+                    NSURL *fileURL = document.fileURL;
+                    NSString *phrase = document.password; // Document properties
+                    
+                    BOOL isDoublePage = (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) ? YES : NO;
+                    contentView = [[ReaderContentView alloc] initWithFrame:viewRect fileURL:fileURL page:number password:phrase isDoublePage:isDoublePage];
+                    
+                    [theScrollView addSubview:contentView];
+                    [contentViews setObject:contentView forKey:key];
+                    
+                    contentView.message = self; [newPageSet addIndex:number];
+                }
+                else // Reposition the existing content view
+                {
+                    contentView.frame = viewRect; [contentView zoomReset];
+                    
+                    [unusedViews removeObjectForKey:key];
+                }
+                
+                viewRect.origin.x += viewRect.size.width;
+            }
+        }
+		
 
 		[unusedViews enumerateKeysAndObjectsUsingBlock: // Remove unused views
 			^(id key, id object, BOOL *stop)
@@ -298,7 +334,7 @@
         
         //CGRect scrollViewBounds = theScrollView.bounds;
         //theScrollView.bounds = CGRectMake(0, 0, scrollViewBounds.size.width, scrollViewBounds.size.height);
-	}
+	//}
 }
 
 - (void)showDocument:(id)object
@@ -398,7 +434,8 @@
 
 	[singleTapOne requireGestureRecognizerToFail:doubleTapOne]; // Single tap requires double tap to fail
 
-	contentViews = [NSMutableDictionary new]; lastHideTime = [NSDate date];
+	contentViews = [NSMutableDictionary new];
+    lastHideTime = [NSDate date];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -482,11 +519,41 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
+    
 	if (isVisible == NO) return; // iOS present modal bodge
 
-	[self updateScrollViewContentViews]; // Update content views
+    __block NSInteger page = 0;
+	CGFloat contentOffsetX = theScrollView.contentOffset.x;
+    
+    // Enumerate content views
+	[contentViews enumerateKeysAndObjectsUsingBlock:
+     ^(id key, id object, BOOL *stop)
+     {
+         ReaderContentView *contentView = object;
+         
+         if (contentView.frame.origin.x == contentOffsetX)
+         {
+             page = contentView.tag; *stop = YES;
+         }
+         [contentView removeFromSuperview];
+     }
+     ];
+    
+    if (page != 0) {
+        lastPageNumber = page;
+    } else {
+        page = lastPageNumber;
+    }
+    
+    // delete the cache
+    contentViews = [NSMutableDictionary new];
+    
+    [self showDocumentPage:page - 4]; // Show the page
+    
+	//[self updateScrollViewContentViews]; // Update content views
 
 	lastAppearSize = CGSizeZero; // Reset view size tracking
+     
 }
 
 /*
@@ -530,7 +597,6 @@
 		{
 			ReaderContentView *contentView = object;
 
-            NSLog(@"contentview frame x: %f, content offset x: %f", contentView.frame.origin.x, contentOffsetX);
 			if (contentView.frame.origin.x == contentOffsetX)
 			{
 				page = contentView.tag; *stop = YES;
@@ -543,13 +609,12 @@
     } else {
         page = lastPageNumber;
     }
-#if (READER_DOUBLE_PAGE_IPAD == TRUE)
-	if (page != 0) {
+    
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         [self showDocumentPage:page - 4]; // Show the page
+    } else {
+        [self showDocumentPage:page - 2]; // Show the page
     }
-#else
-    if (page != 0) [self showDocumentPage:page]; // Show the page
-#endif
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView

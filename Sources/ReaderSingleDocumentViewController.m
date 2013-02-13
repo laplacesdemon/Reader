@@ -27,7 +27,8 @@
     ReaderContentView *contentView = [[ReaderContentView alloc] initWithFrame:self.view.frame
                                                                       fileURL:fileURL
                                                                          page:self.pageNumber
-                                                                     password:phrase];
+                                                                     password:phrase
+                                                                 isDoublePage:NO];
     [self.view addSubview:contentView];
 }
 

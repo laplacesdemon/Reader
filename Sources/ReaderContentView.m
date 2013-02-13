@@ -59,7 +59,7 @@ static void *ReaderContentViewContext = &ReaderContentViewContext;
 
 #pragma mark Properties
 
-@synthesize message;
+@synthesize message, isDoublePage;
 
 #pragma mark ReaderContentView functions
 
@@ -87,7 +87,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 	zoomAmount = ((self.maximumZoomScale - self.minimumZoomScale) / ZOOM_LEVELS);
 }
 
-- (id)initWithFrame:(CGRect)frame fileURL:(NSURL *)fileURL page:(NSUInteger)page password:(NSString *)phrase
+- (id)initWithFrame:(CGRect)frame fileURL:(NSURL *)fileURL page:(NSUInteger)page password:(NSString *)phrase isDoublePage:(BOOL)isItDoublePage
 {
 	if ((self = [super initWithFrame:frame]))
 	{
@@ -104,17 +104,24 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 		self.delegate = self;
         
         self.backgroundColor = [UIColor blackColor];
-
-		ReaderContentPage *contentPage1 = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
-        ReaderContentPage *contentPage2 = [[ReaderContentPage alloc] initWithURL:fileURL page:page + 1 password:phrase];
-        [contentPage2 setFrame:CGRectMake(contentPage2.frame.origin.x + contentPage1.frame.size.width, contentPage2.frame.origin.y, contentPage2.frame.size.width, contentPage2.frame.size.height)];
         
-        float theHeight = MAX(contentPage1.frame.size.height, contentPage2.frame.size.height);
-        NSLog(@"self height: %f, %f, %f", self.frame.size.height, self.bounds.size.height,theHeight);
-        theContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, contentPage1.frame.size.width + contentPage2.frame.size.width, theHeight)];
-        [theContentView addSubview:contentPage1];
-        [theContentView addSubview:contentPage2];
+        self.isDoublePage = isItDoublePage;
 
+        if (isDoublePage) {
+            ReaderContentPage *contentPage1 = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
+            ReaderContentPage *contentPage2 = [[ReaderContentPage alloc] initWithURL:fileURL page:page + 1 password:phrase];
+            [contentPage2 setFrame:CGRectMake(contentPage2.frame.origin.x + contentPage1.frame.size.width, contentPage2.frame.origin.y, contentPage2.frame.size.width, contentPage2.frame.size.height)];
+            
+            float theHeight = MAX(contentPage1.frame.size.height, contentPage2.frame.size.height);
+            theContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, contentPage1.frame.size.width + contentPage2.frame.size.width, theHeight)];
+            [theContentView addSubview:contentPage1];
+            [theContentView addSubview:contentPage2];
+        } else {
+            ReaderContentPage *contentPage1 = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
+            theContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, contentPage1.frame.size.width, contentPage1.frame.size.height)];
+            [theContentView addSubview:contentPage1];
+        }
+		
 		if (theContentView != nil) // Must have a valid and initialized content view
 		{
 			theContainerView = [[UIView alloc] initWithFrame:theContentView.bounds];

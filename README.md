@@ -1,6 +1,23 @@
 
 ## PDF Reader Core for iOS
 
+### Information About This Fork
+
+This fork is an effort to support displaying double pages (side-by-side) in 
+landscape orientation, and only one in portrait. 
+
+Since I don't need the navigation bar, I didn't fix page indicators and thumbnails on them.
+I'd be appreciated if anyone else work on that.
+
+I have to admit that this is one of the shittiest works I've ever done. 
+I'm not proud of it. I had to do it for a client who's obsessed with this feature. 
+So sadly it became a throw-away product unless if someone out there willing to make it nicer.
+I did mess around and did some trial-errors, that's why the codebase is messy.
+
+I resent the initial coding conventiens in this project, esp. multi-statements in one line. 
+It's very confusing while you try to read the code. And I fix some of them. Usually I keep 
+writing code using the initial convention, but I couldn't resist this time.
+
 ### Introduction
 
 I've crafted this open source PDF reader code for fellow iOS

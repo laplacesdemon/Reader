@@ -43,7 +43,9 @@
 
 @property (nonatomic, unsafe_unretained, readwrite) id <ReaderContentViewDelegate> message;
 
-- (id)initWithFrame:(CGRect)frame fileURL:(NSURL *)fileURL page:(NSUInteger)page password:(NSString *)phrase;
+@property (nonatomic) BOOL isDoublePage;
+
+- (id)initWithFrame:(CGRect)frame fileURL:(NSURL *)fileURL page:(NSUInteger)page password:(NSString *)phrase isDoublePage:(BOOL)isItDoublePage;
 
 - (void)showPageThumb:(NSURL *)fileURL page:(NSInteger)page password:(NSString *)phrase guid:(NSString *)guid;
 
