@@ -69,6 +69,7 @@
 		67146AD6169F277D00981A8F /* ReaderSingleDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AD5169F277D00981A8F /* ReaderSingleDocumentViewController.m */; };
 		67146AD9169F2E4700981A8F /* ReaderBaseDocumentBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146AD8169F2E4700981A8F /* ReaderBaseDocumentBViewController.m */; };
 		67146ADC169F33B900981A8F /* ReaderMultipleDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67146ADB169F33B800981A8F /* ReaderMultipleDocumentViewController.m */; };
+		675BC97716CBA0D100D6E8F1 /* TwoScoop.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 675BC97616CBA0D100D6E8F1 /* TwoScoop.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -168,6 +169,7 @@
 		67146AD8169F2E4700981A8F /* ReaderBaseDocumentBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderBaseDocumentBViewController.m; path = Sources/ReaderBaseDocumentBViewController.m; sourceTree = "<group>"; };
 		67146ADA169F33B800981A8F /* ReaderMultipleDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderMultipleDocumentViewController.h; path = Sources/ReaderMultipleDocumentViewController.h; sourceTree = "<group>"; };
 		67146ADB169F33B800981A8F /* ReaderMultipleDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderMultipleDocumentViewController.m; path = Sources/ReaderMultipleDocumentViewController.m; sourceTree = "<group>"; };
+		675BC97616CBA0D100D6E8F1 /* TwoScoop.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = TwoScoop.pdf; path = Resources/TwoScoop.pdf; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Reader-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Reader-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -241,6 +243,7 @@
 				45AB72DD141FC043003524C3 /* LICENSE.md */,
 				8D1107310486CEB800E47090 /* Reader-Info.plist */,
 				4541A9D7122EA716001A5E60 /* Localizable.strings */,
+				675BC97616CBA0D100D6E8F1 /* TwoScoop.pdf */,
 				45AB72DB141FC039003524C3 /* Reader.pdf */,
 			);
 			name = Resources;
@@ -431,6 +434,7 @@
 				4583767F1533B0AC003CD230 /* AppIcon-144.png in Resources */,
 				4544D87C1610A3C2003DB132 /* Default-568h@2x.png in Resources */,
 				45D5AD9F1610E66B00706B9A /* HISTORY.md in Resources */,
+				675BC97716CBA0D100D6E8F1 /* TwoScoop.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

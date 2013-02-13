@@ -80,7 +80,7 @@
 {
 	NSInteger count = [document.pageCount integerValue];
 
-	if (count > PAGING_VIEWS) count = PAGING_VIEWS; // Limit
+	//if (count > PAGING_VIEWS) count = PAGING_VIEWS; // Limit
 
 	CGFloat contentHeight = theScrollView.bounds.size.height;
 
@@ -110,7 +110,18 @@
 		}
 	];
 
-	__block CGRect viewRect = CGRectZero; viewRect.size = theScrollView.bounds.size;
+	__block CGRect viewRect = CGRectZero;
+#if (READER_DOUBLE_PAGE_IPAD == TRUE)
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        // fit 2 pages in the viewRect
+        viewRect.size = CGSizeMake(theScrollView.bounds.size.width / 2, theScrollView.bounds.size.height);
+    } else {
+        viewRect.size = theScrollView.bounds.size;
+    }
+#else
+    viewRect.size = theScrollView.bounds.size;
+#endif
+    
 
 	__block CGPoint contentOffset = CGPointZero; NSInteger page = [document.pageNumber integerValue];
 
@@ -121,7 +132,8 @@
 
 			ReaderContentView *contentView = [contentViews objectForKey:key];
 
-			contentView.frame = viewRect; if (page == number) contentOffset = viewRect.origin;
+			contentView.frame = viewRect;
+            if (page == number) contentOffset = viewRect.origin;
 
 			viewRect.origin.x += viewRect.size.width; // Next view frame position
 		}
@@ -159,14 +171,21 @@
 		}
 		else // Handle more pages
 		{
-			minValue = (page - 1);
+#if (READER_DOUBLE_PAGE_IPAD == TRUE)
+            minValue = (page - 0);
+			maxValue = (page + 8);
+#else
+            minValue = (page - 1);
 			maxValue = (page + 1);
-
-			if (minValue < minPage)
-				{minValue++; maxValue++;}
-			else
-				if (maxValue > maxPage)
-					{minValue--; maxValue--;}
+#endif
+			
+			if (minValue < minPage) {
+                minValue++; maxValue++;
+            } else {
+				if (maxValue > maxPage) {
+                    minValue--; maxValue--;
+                }
+            }
 		}
 
 		NSMutableIndexSet *newPageSet = [NSMutableIndexSet new];
@@ -174,6 +193,8 @@
 		NSMutableDictionary *unusedViews = [contentViews mutableCopy];
         
         CGRect viewRect = CGRectZero;
+        //NSLog(@"scroll view bounds: %f, %f, %f, %f", theScrollView.bounds.origin.x, theScrollView.bounds.origin.y, theScrollView.bounds.size.width, theScrollView.bounds.size.height);
+        
 #if (READER_DOUBLE_PAGE_IPAD == TRUE)
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
             // fit 2 pages in the viewRect
@@ -229,17 +250,26 @@
 
 		CGPoint contentOffset = CGPointZero;
 
-		if (maxPage >= PAGING_VIEWS)
-		{
-			if (page == maxPage)
+        
+		if (maxPage >= PAGING_VIEWS) {
+			if (page == maxPage) {
 				contentOffset.x = viewWidthX2;
-			else
-				if (page != minPage)
+			} else {
+				if (page != minPage) {
+#if (READER_DOUBLE_PAGE_IPAD == TRUE)
+                    contentOffset.x = viewWidthX2;
+#else
 					contentOffset.x = viewWidthX1;
-		}
-		else
-			if (page == (PAGING_VIEWS - 1))
+#endif
+                }
+            }
+		} else {
+			if (page == (PAGING_VIEWS - 1)) {
 				contentOffset.x = viewWidthX1;
+            }
+        }
+        NSLog(@"content offset: %f, %f", contentOffset.x, contentOffset.y);
+        NSLog(@"content size: %f, %f", theScrollView.contentSize.width, theScrollView.contentSize.height);
 
 		if (CGPointEqualToPoint(theScrollView.contentOffset, contentOffset) == false)
 		{
@@ -282,6 +312,10 @@
 		[self updateToolbarBookmarkIcon]; // Update bookmark
 
 		currentPage = page; // Track current page number
+        
+        
+        //CGRect scrollViewBounds = theScrollView.bounds;
+        //theScrollView.bounds = CGRectMake(0, 0, scrollViewBounds.size.width, scrollViewBounds.size.height);
 	}
 }
 
@@ -516,7 +550,14 @@
 		}
 	];
 
-	if (page != 0) [self showDocumentPage:page]; // Show the page
+    NSLog(@"page: %d", page);
+#if (READER_DOUBLE_PAGE_IPAD == TRUE)
+	if (page != 0) {
+        [self showDocumentPage:page - 2]; // Show the page
+    }
+#else
+    if (page != 0) [self showDocumentPage:page]; // Show the page
+#endif
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
@@ -539,6 +580,8 @@
 
 - (void)decrementPageNumber
 {
+    NSLog(@"DECR: theScrollView.tag: %d", theScrollView.tag);
+    NSLog(@"DECR: current page: %d / %d", [document.pageNumber integerValue], [document.pageCount integerValue]);
 	if (theScrollView.tag == 0) // Scroll view did end
 	{
 		NSInteger page = [document.pageNumber integerValue];
@@ -560,6 +603,8 @@
 
 - (void)incrementPageNumber
 {
+    NSLog(@"INCR: theScrollView.tag: %d", theScrollView.tag);
+    NSLog(@"INCR: current page: %d / %d", [document.pageNumber integerValue], [document.pageCount integerValue]);
 	if (theScrollView.tag == 0) // Scroll view did end
 	{
 		NSInteger page = [document.pageNumber integerValue];
