@@ -6,7 +6,7 @@
 This fork is an effort to support displaying double pages (side-by-side) in 
 landscape orientation, and only one in portrait. 
 
-Since I don't need the navigation bar, I didn't fix page indicators and thumbnails on them.
+Since I didn't need the navigation bar, I didn't fix page indicators and thumbnails on them.
 I'd be appreciated if anyone else work on that.
 
 I have to admit that this is one of the shittiest works I've ever done. 

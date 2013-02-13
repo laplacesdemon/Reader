@@ -178,19 +178,7 @@
 		NSMutableDictionary *unusedViews = [contentViews mutableCopy];
         
         CGRect viewRect = CGRectZero;
-        //NSLog(@"scroll view bounds: %f, %f, %f, %f", theScrollView.bounds.origin.x, theScrollView.bounds.origin.y, theScrollView.bounds.size.width, theScrollView.bounds.size.height);
-        
-#if (READER_DOUBLE_PAGE_IPAD == TRUE)
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            // fit 2 pages in the viewRect
-            //viewRect.size = CGSizeMake(theScrollView.bounds.size.width / 2, theScrollView.bounds.size.height);
-            viewRect.size = theScrollView.bounds.size;
-        } else {
-            viewRect.size = theScrollView.bounds.size;
-        }
-#else
         viewRect.size = theScrollView.bounds.size;
-#endif
 
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
             for (NSInteger number = minValue; number <= maxValue; number = number + 2)
@@ -364,7 +352,8 @@
 
 			[notificationCenter addObserver:self selector:@selector(applicationWill:) name:UIApplicationWillResignActiveNotification object:nil];
 
-			[object updateProperties]; document = object; // Retain the supplied ReaderDocument object for our use
+			[object updateProperties];
+            document = object; // Retain the supplied ReaderDocument object for our use
 
 			[ReaderThumbCache touchThumbCacheWithGUID:object.guid]; // Touch the document thumb cache directory
 
@@ -611,9 +600,13 @@
     }
     
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        [self showDocumentPage:page - 4]; // Show the page
+        if (page - 4 > 0) {
+            [self showDocumentPage:page - 4]; // Show the page
+        }
     } else {
-        [self showDocumentPage:page - 2]; // Show the page
+        if (page - 4 > 0) {
+            [self showDocumentPage:page - 2]; // Show the page
+        }
     }
 }
 
