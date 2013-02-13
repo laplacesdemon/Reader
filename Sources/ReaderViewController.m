@@ -59,6 +59,8 @@
 	NSDate *lastHideTime;
 
 	BOOL isVisible;
+    
+    NSInteger lastPageNumber;
 }
 
 #pragma mark Constants
@@ -249,7 +251,6 @@
 		CGFloat viewWidthX2 = (viewWidthX1 * 2.0f);
 
 		CGPoint contentOffset = CGPointZero;
-
         
 		if (maxPage >= PAGING_VIEWS) {
 			if (page == maxPage) {
@@ -268,9 +269,7 @@
 				contentOffset.x = viewWidthX1;
             }
         }
-        NSLog(@"content offset: %f, %f", contentOffset.x, contentOffset.y);
-        NSLog(@"content size: %f, %f", theScrollView.contentSize.width, theScrollView.contentSize.height);
-
+        
 		if (CGPointEqualToPoint(theScrollView.contentOffset, contentOffset) == false)
 		{
 			theScrollView.contentOffset = contentOffset; // Update content offset
@@ -532,6 +531,11 @@
 
 #pragma mark UIScrollViewDelegate methods
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    lastPageNumber++;
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
 	__block NSInteger page = 0;
@@ -543,6 +547,7 @@
 		{
 			ReaderContentView *contentView = object;
 
+            NSLog(@"contentview frame x: %f, content offset x: %f", contentView.frame.origin.x, contentOffsetX);
 			if (contentView.frame.origin.x == contentOffsetX)
 			{
 				page = contentView.tag; *stop = YES;
@@ -550,7 +555,11 @@
 		}
 	];
 
-    NSLog(@"page: %d", page);
+    if (page != 0) {
+        lastPageNumber = page;
+    } else {
+        page = lastPageNumber;
+    }
 #if (READER_DOUBLE_PAGE_IPAD == TRUE)
 	if (page != 0) {
         [self showDocumentPage:page - 2]; // Show the page
