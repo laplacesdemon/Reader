@@ -560,33 +560,10 @@
     
 	if (isVisible == NO) return; // iOS present modal bodge
 
-    __block NSInteger page = 0;
-	CGFloat contentOffsetX = theScrollView.contentOffset.x;
-    
-    // Enumerate content views
-	[contentViews enumerateKeysAndObjectsUsingBlock:
-     ^(id key, id object, BOOL *stop)
-     {
-         ReaderContentView *contentView = object;
-         
-         if (contentView.frame.origin.x == contentOffsetX)
-         {
-             page = contentView.tag; *stop = YES;
-         }
-         [contentView removeFromSuperview];
-     }
-     ];
-    
-    if (page != 0) {
-        lastPageNumber = page;
-    } else {
-        page = lastPageNumber;
-    }
-    
     // delete the cache
     contentViews = [NSMutableDictionary new];
     
-    [self showDocumentPage:page - 4]; // Show the page
+    [self showDocumentPage:currentPage]; // Show the page
     
 	[self updateScrollViewContentViews]; // Update content views
 
