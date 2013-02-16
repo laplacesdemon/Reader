@@ -160,7 +160,7 @@
     {
 #if (READER_DOUBLE_PAGE_IPAD == TRUE)
         minValue = (page - 2);
-        maxValue = (page + 2);
+        maxValue = (page + 10);
 #else
         minValue = (page - 1);
         maxValue = (page + 1);
@@ -288,9 +288,6 @@
 
 
 
-
-
-
     // adjust the offset
     CGFloat viewWidthX1 = viewRect.size.width;
     CGFloat viewWidthX2 = (viewWidthX1 * 2.0f);
@@ -320,15 +317,9 @@ NSLog(@"scrollview content offset: %f", theScrollView.contentOffset.x);
             contentOffset.x = viewWidthX1;
         }
     }
-    NSLog(@"old content offset: %f", contentOffset.x);
     
-    //if (CGPointEqualToPoint(theScrollView.contentOffset, contentOffset) == false)
-    //{
-    theScrollView.contentOffset = contentOffset; // Update content offset
-    //}
-    ///////////////
-
-
+    // Update content offset
+    theScrollView.contentOffset = contentOffset;
 
 
     // update the page number
