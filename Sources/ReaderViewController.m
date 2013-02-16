@@ -74,7 +74,7 @@
 
 #pragma mark Properties
 
-@synthesize delegate;
+@synthesize delegate, initialPage;
 
 #pragma mark Support methods
 
@@ -160,7 +160,7 @@
     {
 #if (READER_DOUBLE_PAGE_IPAD == TRUE)
         minValue = (page - 2);
-        maxValue = (page + 8);
+        maxValue = (page + 2);
 #else
         minValue = (page - 1);
         maxValue = (page + 1);
@@ -270,16 +270,17 @@
     [unusedViews enumerateKeysAndObjectsUsingBlock: // Remove unused views
         ^(id key, id object, BOOL *stop)
         {
+            
             NSNumber *pageNumber = (NSNumber *)key;
             NSInteger pageNumberInt = [pageNumber integerValue];
             
             NSNumber *pageToRelease = [NSNumber numberWithInteger:pageNumberInt - 4];
-            NSLog(@"releasing unused page: %@", pageToRelease);
+            //NSLog(@"releasing unused page: %@", pageToRelease);
             
-
             ReaderContentView *contentView = (ReaderContentView *)[contentViews objectForKey:pageToRelease];
             [contentViews removeObjectForKey:pageToRelease];
             [contentView removeFromSuperview];
+             
         }
     ];
 
@@ -291,8 +292,6 @@
 
 
     // adjust the offset
-
-/*
     CGFloat viewWidthX1 = viewRect.size.width;
     CGFloat viewWidthX2 = (viewWidthX1 * 2.0f);
     CGPoint contentOffset = CGPointZero;
@@ -326,12 +325,8 @@ NSLog(@"scrollview content offset: %f", theScrollView.contentOffset.x);
     //if (CGPointEqualToPoint(theScrollView.contentOffset, contentOffset) == false)
     //{
     theScrollView.contentOffset = contentOffset; // Update content offset
-    CGRect scrollViewRect = theScrollView.frame;
-    CGSize scrollViewContentSize = theScrollView.contentSize;
-    CGPoint scrollViewContentOffset = theScrollView.contentOffset;
     //}
     ///////////////
-*/
 
 
 
@@ -392,7 +387,9 @@ NSLog(@"scrollview content offset: %f", theScrollView.contentOffset.x);
 
     NSLog(@"last opened page: %d", [document.pageNumber integerValue]);
     
-	[self showDocumentPage:1];
+    NSInteger pageToShow = (self.initialPage > 1) ? self.initialPage : 1;
+    
+	[self showDocumentPage:pageToShow];
 
 	document.lastOpen = [NSDate date]; // Update last opened date
 
@@ -554,6 +551,7 @@ NSLog(@"scrollview content offset: %f", theScrollView.contentOffset.x);
 	[super viewDidUnload];
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
@@ -561,17 +559,21 @@ NSLog(@"scrollview content offset: %f", theScrollView.contentOffset.x);
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    if ([self.delegate respondsToSelector:@selector(reader:willRotateToInterfaceRotation:currentPage:document:)]) {
+        [self.delegate reader:self willRotateToInterfaceRotation:toInterfaceOrientation currentPage:currentPage document:document];
+    }
+    /*
 	if (isVisible == NO) return; // iOS present modal bodge
 
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 	{
 		if (printInteraction != nil) [printInteraction dismissAnimated:NO];
-	}
+	}*/
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
-    
+    /*
 	if (isVisible == NO) return; // iOS present modal bodge
 
     // delete the cache
@@ -582,17 +584,20 @@ NSLog(@"scrollview content offset: %f", theScrollView.contentOffset.x);
 	[self updateScrollViewContentViews]; // Update content views
 
 	lastAppearSize = CGSizeZero; // Reset view size tracking
-     
+     */
 }
 
-/*
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    if ([self.delegate respondsToSelector:@selector(reader:didRotateFromInterfaceRotation:currentPage:document:)]) {
+        [self.delegate reader:self didRotateFromInterfaceRotation:fromInterfaceOrientation currentPage:currentPage document:document];
+    }
+    
 	//if (isVisible == NO) return; // iOS present modal bodge
 
 	//if (fromInterfaceOrientation == self.interfaceOrientation) return;
 }
-*/
 
 - (void)didReceiveMemoryWarning
 {

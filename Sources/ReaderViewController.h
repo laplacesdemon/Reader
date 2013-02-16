@@ -34,12 +34,15 @@
 @optional // Delegate protocols
 
 - (void)dismissReaderViewController:(ReaderViewController *)viewController;
+- (void)reader:(ReaderViewController *)viewController willRotateToInterfaceRotation:(UIInterfaceOrientation)toInterfaceOrientation currentPage:(NSInteger)currentPage document:(ReaderDocument *)document;
+- (void)reader:(ReaderViewController *)viewController didRotateFromInterfaceRotation:(UIInterfaceOrientation)toInterfaceOrientation currentPage:(NSInteger)currentPage document:(ReaderDocument *)document;
 
 @end
 
 @interface ReaderViewController : UIViewController
 
 @property (nonatomic, unsafe_unretained, readwrite) id <ReaderViewControllerDelegate> delegate;
+@property (nonatomic) NSInteger initialPage;
 
 - (id)initWithReaderDocument:(ReaderDocument *)object;
 

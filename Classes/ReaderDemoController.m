@@ -30,7 +30,7 @@
 #import "Reader.h"
 
 @interface ReaderDemoController () <ReaderViewControllerDelegate>
-
+- (void)_createAndPresentReaderWithDocument:(ReaderDocument *)document page:(NSInteger)page;
 @end
 
 @implementation ReaderDemoController
@@ -138,35 +138,12 @@
 	[super viewDidUnload];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) // See README
-		return UIInterfaceOrientationIsPortrait(interfaceOrientation);
-	else
-		return YES;
-}
-
-/*
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
-{
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-	//if (fromInterfaceOrientation == self.interfaceOrientation) return;
-}
-*/
-
 - (void)didReceiveMemoryWarning
 {
 #ifdef DEBUG
 	NSLog(@"%s", __FUNCTION__);
 #endif
-
+    
 	[super didReceiveMemoryWarning];
 }
 
@@ -175,6 +152,36 @@
     [self performSelector:@selector(resetPageViewcontroller2) withObject:nil afterDelay:0.2];
 }
 
+#pragma mark - interface rotation
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+    /*
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) // See README
+		return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+	else
+		return YES;
+     */
+}
+/*
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    NSLog(@"will rotate to interface orientation");
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
+{
+    NSLog(@"willAnimateRotationToInterfaceOrientation");
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    NSLog(@"didRotateFromInterfaceOrientation");
+	//if (fromInterfaceOrientation == self.interfaceOrientation) return;
+}
+ */
+ 
 #pragma mark UIGestureRecognizer methods
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer
@@ -223,6 +230,30 @@
 	[self dismissModalViewControllerAnimated:YES];
 
 #endif // DEMO_VIEW_CONTROLLER_PUSH
+}
+
+- (void)reader:(ReaderViewController *)viewController willRotateToInterfaceRotation:(UIInterfaceOrientation)toInterfaceOrientation currentPage:(NSInteger)currentPage document:(ReaderDocument *)document
+{
+    [self dismissModalViewControllerAnimated:NO];
+}
+
+- (void)reader:(ReaderViewController *)viewController didRotateFromInterfaceRotation:(UIInterfaceOrientation)toInterfaceOrientation currentPage:(NSInteger)currentPage document:(ReaderDocument *)document
+{
+    [self _createAndPresentReaderWithDocument:document page:currentPage];
+}
+
+- (void)_createAndPresentReaderWithDocument:(ReaderDocument *)document page:(NSInteger)page
+{
+    ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
+    
+    readerViewController.delegate = self; // Set the ReaderViewController delegate to self
+    
+    readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    readerViewController.initialPage = page;
+    
+    [self presentModalViewController:readerViewController animated:NO];
 }
 
 @end
